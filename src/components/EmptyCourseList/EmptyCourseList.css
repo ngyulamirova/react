@@ -1,0 +1,19 @@
+.empty-course-container {
+    margin: 200px auto;
+}
+
+.empty-course-title {
+    text-align: center;
+    font-weight: bold;
+}
+
+.empty-course-text {
+    text-align: center;
+    font-size: 10px;
+}
+
+.empty-course-button {
+    display: flex;
+    justify-content: center;
+    margin: 26px 0;
+}

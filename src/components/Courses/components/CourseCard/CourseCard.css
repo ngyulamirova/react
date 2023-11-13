@@ -1,0 +1,22 @@
+.course-card-container {
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 1.5px 3px 0 #00000091;
+    border-left: 8px solid black;
+    border-radius: 6px;
+}
+
+.course-card-info {
+    display: grid;
+    grid-template-columns: 60% auto;
+    grid-gap: 10px;
+}
+.course-card-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.course-card-property {
+    font-weight: bold;
+    padding-right: 8px;;
+}

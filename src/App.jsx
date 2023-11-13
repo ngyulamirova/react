@@ -12,8 +12,8 @@ const courses = mockedCoursesList.map((el) => {
 			.filter((element) => el.authors.includes(element.id))
 			.map(({ name }) => name)
 			.join(', ') || '';
-	el.duration = getCourseDuration(el.duration);
-	el.creationDate = formatCreationDate(el.creationDate);
+	el.time = getCourseDuration(el.duration);
+	el.date = formatCreationDate(el.creationDate);
 	return el;
 });
 
@@ -24,18 +24,18 @@ function App() {
 			{!courses.length ? (
 				<EmptyCourseList />
 			) : (
-				courses.map(
-					({ description, author, title, duration, creationDate, id }) => (
-						<CourseCard
-							key={id}
-							description={description}
-							author={author}
-							title={title}
-							duration={duration}
-							creationDate={creationDate}
-						/>
-					)
-				)
+				courses.map(({ description, author, title, time, date, id }) => (
+					<CourseCard
+						key={id}
+						id={id}
+						description={description}
+						author={author}
+						title={title}
+						time={time}
+						date={date}
+						courseInfo={false}
+					/>
+				))
 			)}
 		</div>
 	);

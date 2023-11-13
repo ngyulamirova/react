@@ -6,10 +6,15 @@
     border-radius: 6px;
 }
 
+.course-card-info-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #CFCFCF;
+}
+
 .course-card-info {
     display: grid;
-    grid-template-columns: 60% auto;
-    grid-gap: 10px;
+    grid-template-columns: 60% 20px auto;
 }
 .course-card-button-container {
     display: flex;
@@ -19,4 +24,11 @@
 .course-card-property {
     font-weight: bold;
     padding-right: 8px;;
+}
+
+.course-card-border {
+    height: 100%;
+    margin: 0 auto;
+    width: 1px;
+    background-color: #CFCFCF;
 }

@@ -5,6 +5,10 @@ import { CourseCard } from './components/Courses/components/CourseCard/CourseCar
 import { mockedAuthorsList, mockedCoursesList } from './constants';
 import { getCourseDuration } from './helpers/getCourseDuration';
 import { formatCreationDate } from './helpers/formatCreationDate';
+import { useEffect, useState } from 'react';
+import { CourseInfo } from './components/CourseInfo/CourseInfo';
+import { SearchBar } from './components/Courses/components/SearchBar/SearchBar';
+import { filterElements } from './helpers/filterElements';
 
 const courses = mockedCoursesList.map((el) => {
 	el.author =
@@ -18,24 +22,48 @@ const courses = mockedCoursesList.map((el) => {
 });
 
 function App() {
+	const [selected, setSelected] = useState(null);
+	const [searchedValue, setSearchedValue] = useState('');
+	const [shownCourses, setShownCourses] = useState(courses);
+	useEffect(
+		() =>
+			setShownCourses(filterElements(courses, searchedValue, ['title', 'id'])),
+		[searchedValue]
+	);
+
 	return (
 		<div className='app-container'>
 			<Header />
 			{!courses.length ? (
 				<EmptyCourseList />
+			) : selected ? (
+				<CourseInfo
+					key={selected.id}
+					id={selected.id}
+					description={selected.description}
+					author={selected.author}
+					title={selected.title}
+					time={selected.time}
+					date={selected.date}
+					setSelected={setSelected}
+				/>
 			) : (
-				courses.map(({ description, author, title, time, date, id }) => (
-					<CourseCard
-						key={id}
-						id={id}
-						description={description}
-						author={author}
-						title={title}
-						time={time}
-						date={date}
-						courseInfo={false}
-					/>
-				))
+				<div>
+					<SearchBar search={setSearchedValue} />
+					{shownCourses.map((props) => (
+						<CourseCard
+							key={props.id}
+							id={props.id}
+							description={props.description}
+							author={props.author}
+							title={props.title}
+							time={props.time}
+							date={props.date}
+							courseInfo={false}
+							setSelected={setSelected}
+						/>
+					))}
+				</div>
 			)}
 		</div>
 	);

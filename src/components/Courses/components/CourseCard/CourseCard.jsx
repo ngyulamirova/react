@@ -39,9 +39,12 @@ export const CourseCard = (props) => (
 					</p>
 				) : (
 					<div className='course-card-button-container'>
-						<Button name='SHOW COURSE' />
-						<Button />
-						<Button />
+						<Button
+							name='SHOW COURSE'
+							onClick={() => props.setSelected(props)}
+						/>
+						<Button icon='bin' />
+						<Button icon='edit' />
 					</div>
 				)}
 			</div>

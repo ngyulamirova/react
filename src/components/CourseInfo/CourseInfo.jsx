@@ -1,20 +1,22 @@
 import React from 'react';
 import { CourseCard } from '../Courses/components/CourseCard/CourseCard';
 import { Button } from '../../common/Button/Button';
+import './CourseInfo.css';
 
 export const CourseInfo = (props) => (
-	<div className='course-info-container'>
-		<h2>{props.description}</h2>
+	<div>
+		<h2 className='course-info-element'>{props.title}</h2>
 		<CourseCard
 			key={props.id}
 			id={props.id}
 			description={props.description}
 			author={props.author}
-			title={props.title}
 			time={props.time}
 			date={props.date}
 			courseInfo={true}
 		/>
-		<Button name='BACK' />
+		<span className='course-info-element'>
+			<Button name='BACK' onClick={() => props.setSelected(null)} />
+		</span>
 	</div>
 );

@@ -1,8 +1,23 @@
-button {
+.button {
     height: 50px;
     width: 140px;
     color: WHITE;
     background-color: #007298;
     border: none;
     cursor: pointer;
+    border-radius: 8px;
+}
+
+.icon {
+    height: 50px;
+    width: 60px;
+    background-color: #007298;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.button-icon {
+    height: 25px;
+    width: 25px;
 }

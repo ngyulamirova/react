@@ -3,9 +3,9 @@ import React from 'react';
 import { Logo } from './components/Logo/Logo';
 import { Button } from '../../common/Button/Button';
 
-export const Header = () => (
+export const Header = (props) => (
 	<div className='header'>
 		<Logo />
-		<Button name='LOGIN' />
+		{!props.hasNoButton ? <Button name='LOGIN' /> : null}
 	</div>
 );

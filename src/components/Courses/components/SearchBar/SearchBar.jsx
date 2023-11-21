@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input } from '../../../../common/Input/Input';
 import { Button } from '../../../../common/Button/Button';
 import './SearchBar.css';
+import { Link } from 'react-router-dom';
 
 export const SearchBar = (props) => {
 	const [value, setValue] = useState('');
@@ -9,7 +10,9 @@ export const SearchBar = (props) => {
 		<div className='search-bar-container'>
 			<Input setValue={setValue} />
 			<Button name='SEARCH' onClick={() => props.search(value)} />
-			<Button name='ADD NEW' />
+			<Link to='add'>
+				<Button name='ADD NEW' />
+			</Link>
 		</div>
 	);
 };

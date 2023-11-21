@@ -1,0 +1,18 @@
+.create-course-grid {
+    display: grid;
+    grid-template-columns: 50% 1fr;
+    column-gap: 10px;
+}
+
+.create-course-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #CFCFCF;
+}
+
+.create-course-textarea {
+    border: 1px solid #cfcfcf;
+    height: 100px;
+    width: 400px;
+}

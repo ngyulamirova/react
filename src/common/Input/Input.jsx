@@ -7,7 +7,8 @@ export const Input = (props) => {
 		<input
 			className='input'
 			ref={inputRef}
-			onInput={() => props.setValue(inputRef.current.value)}
+			value={props.value}
+			onInput={() => props?.setValue && props.setValue(inputRef.current.value)}
 			placeholder={props.placeholder || 'Input text'}
 		/>
 	);

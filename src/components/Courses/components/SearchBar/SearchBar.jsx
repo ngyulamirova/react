@@ -3,6 +3,7 @@ import { Input } from '../../../../common/Input/Input';
 import { Button } from '../../../../common/Button/Button';
 import './SearchBar.css';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export const SearchBar = (props) => {
 	const [value, setValue] = useState('');
@@ -15,4 +16,8 @@ export const SearchBar = (props) => {
 			</Link>
 		</div>
 	);
+};
+
+SearchBar.propTypes = {
+	search: PropTypes.func,
 };

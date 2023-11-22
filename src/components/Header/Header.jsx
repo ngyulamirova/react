@@ -6,6 +6,9 @@ import { Button } from '../../common/Button/Button';
 export const Header = (props) => (
 	<div className='header'>
 		<Logo />
-		{!props.hasNoButton ? <Button name='LOGIN' /> : null}
+		{props.name}
+		{props.buttonText ? (
+			<Button name={props.buttonText} onClick={props.onClick} />
+		) : null}
 	</div>
 );

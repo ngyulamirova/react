@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../../../../common/Button/Button';
 import './CourseCard.css';
+import PropTypes from 'prop-types';
 
 export const CourseCard = (props) => (
 	<div
@@ -51,3 +52,13 @@ export const CourseCard = (props) => (
 		</div>
 	</div>
 );
+CourseCard.propTypes = {
+	courseInfo: PropTypes.bool,
+	id: PropTypes.string,
+	description: PropTypes.string,
+	author: PropTypes.string,
+	time: PropTypes.string,
+	date: PropTypes.string,
+	title: PropTypes.string,
+	setSelected: PropTypes.func,
+};

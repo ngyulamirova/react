@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import './Input.css';
+import PropTypes from 'prop-types';
 
 export const Input = (props) => {
 	const inputRef = useRef(null);
@@ -12,4 +13,10 @@ export const Input = (props) => {
 			placeholder={props.placeholder || 'Input text'}
 		/>
 	);
+};
+
+Input.propTypes = {
+	value: PropTypes.string,
+	setValue: PropTypes.func,
+	placeholder: PropTypes.string,
 };

@@ -6,7 +6,6 @@ import { filterElements } from '../../helpers/filterElements';
 import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { formatCreationDate } from '../../helpers/formatCreationDate';
-import { Header } from '../Header/Header';
 import { useEffect, useState } from 'react';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +26,8 @@ export const Courses = () => {
 	const [searchedValue, setSearchedValue] = useState('');
 	const [shownCourses, setShownCourses] = useState(courses);
 	const navigate = useNavigate();
+	useEffect(() => {}, []);
+
 	useEffect(
 		() =>
 			setShownCourses(filterElements(courses, searchedValue, ['title', 'id'])),
@@ -35,12 +36,13 @@ export const Courses = () => {
 
 	useEffect(() => {
 		if (selected?.id) {
-			navigate(`courses/${selected.id}`, { replace: false });
+			navigate(`/courses/${selected.id}`, { replace: false });
+		} else {
+			navigate('/courses', { replace: false });
 		}
 	}, [selected]);
 	return (
-		<div className='courses-container'>
-			<Header />
+		<div>
 			{!courses.length ? (
 				<EmptyCourseList />
 			) : selected ? (

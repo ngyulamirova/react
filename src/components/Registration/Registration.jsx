@@ -4,12 +4,13 @@ import './Registration.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { getErrorsFromResponse } from '../../helpers/getErrorsFromResponce';
 
 export const Registration = (props) => {
 	const [emailInput, setEmailInput] = useState('');
 	const [nameInput, setNameInput] = useState('');
 	const [passwordInput, setPasswordInput] = useState('');
-	const [hasError, setError] = useState(false);
+	const [errors, setErrors] = useState({});
 	const navigate = useNavigate();
 	const loginUrl = 'http://localhost:4000/login';
 	const registrationUrl = 'http://localhost:4000/register';
@@ -18,12 +19,12 @@ export const Registration = (props) => {
 		e.preventDefault();
 		if ((nameInput || props.isLoginPage) && emailInput && passwordInput) {
 			const data = {
-				name: nameInput,
+				name: nameInput || undefined,
 				password: passwordInput,
 				email: emailInput,
 			};
 			const url = props.isLoginPage ? loginUrl : registrationUrl;
-			handleClick(url, JSON.stringify(data));
+			handleClick(url, data);
 		}
 	};
 
@@ -34,20 +35,32 @@ export const Registration = (props) => {
 				body: JSON.stringify(jsonData),
 				headers: {
 					'Content-Type': 'application/json',
+					accept: '*/*',
 				},
 			})
 				.then((response) => {
-					localStorage.setItem(
-						JSON.stringify({
-							token: response,
-							name: nameInput,
-						})
-					);
-					navigate('/courses', { replace: true });
+					if (response.ok) {
+						response.json().then((json) => {
+							localStorage.setItem(
+								'name',
+								(json.user && json.user.name) || nameInput
+							);
+							localStorage.setItem('token', json.result || undefined);
+						});
+						navigate('/courses', { replace: true });
+					} else {
+						response.json().then((json) => {
+							console.log(json);
+							setErrors(json.errors ? getErrorsFromResponse(json.errors) : {});
+						});
+						return response.error;
+					}
 				})
-				.catch(() => navigate('/courses', { replace: true })); //cause request is not working
+				.catch((err) => {
+					console.log(err);
+				});
 		} catch (error) {
-			setError(true);
+			console.log(error);
 		}
 	};
 
@@ -59,13 +72,25 @@ export const Registration = (props) => {
 					{!props.isLoginPage ? (
 						<span>
 							<p className='registration-property-name'>Name</p>
-							<Input value={nameInput} setValue={setNameInput} />
+							<Input
+								error={errors.name}
+								value={nameInput}
+								setValue={setNameInput}
+							/>
 						</span>
 					) : null}
 					<p className='registration-property-name'>Email</p>
-					<Input value={emailInput} setValue={setEmailInput} />
+					<Input
+						error={errors.email}
+						value={emailInput}
+						setValue={setEmailInput}
+					/>
 					<p className='registration-property-name'>Password</p>
-					<Input value={passwordInput} setValue={setPasswordInput} />
+					<Input
+						error={errors.password}
+						value={passwordInput}
+						setValue={setPasswordInput}
+					/>
 					<div className='registration-login-button'>
 						<Button name='LOGIN' />
 					</div>

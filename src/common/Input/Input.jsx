@@ -5,13 +5,18 @@ import PropTypes from 'prop-types';
 export const Input = (props) => {
 	const inputRef = useRef(null);
 	return (
-		<input
-			className='input'
-			ref={inputRef}
-			value={props.value}
-			onInput={() => props?.setValue && props.setValue(inputRef.current.value)}
-			placeholder={props.placeholder || 'Input text'}
-		/>
+		<div>
+			<input
+				className={props.error ? 'error-input' : 'input'}
+				ref={inputRef}
+				value={props.value}
+				onInput={() =>
+					props?.setValue && props.setValue(inputRef.current.value)
+				}
+				placeholder={props.placeholder || 'Input text'}
+			/>
+			{props.error ? <p className='error-text'>{props.error}</p> : null}
+		</div>
 	);
 };
 

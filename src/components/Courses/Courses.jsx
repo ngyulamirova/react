@@ -3,35 +3,34 @@ import { CourseInfo } from '../CourseInfo/CourseInfo';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { filterElements } from '../../helpers/filterElements';
-import { mockedAuthorsList, mockedCoursesList } from '../../constants';
-import { getCourseDuration } from '../../helpers/getCourseDuration';
-import { formatCreationDate } from '../../helpers/formatCreationDate';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import './Courses.css';
 import { useNavigate } from 'react-router-dom';
+import { deleteCoursesAction } from '../../store/courses/actions';
 
-const courses = mockedCoursesList.map((el) => {
-	el.author =
-		mockedAuthorsList
-			.filter((element) => el.authors.includes(element.id))
-			.map(({ name }) => name)
-			.join(', ') || '';
-	el.time = getCourseDuration(el.duration);
-	el.date = formatCreationDate(el.creationDate);
-	return el;
-});
+const selectCourses = (state) => state.courses;
 
 export const Courses = () => {
 	const [selected, setSelected] = useState(null);
 	const [searchedValue, setSearchedValue] = useState('');
-	const [shownCourses, setShownCourses] = useState(courses);
+	const [shownCourses, setShownCourses] = useState([]);
 	const navigate = useNavigate();
-	useEffect(() => {}, []);
+	const allCourses = useSelector(selectCourses);
+	const dispatch = useDispatch();
+
+	const deleteCourse = (id) => {
+		dispatch(deleteCoursesAction(id));
+	};
+
+	useEffect(() => {}, [allCourses]);
 
 	useEffect(
 		() =>
-			setShownCourses(filterElements(courses, searchedValue, ['title', 'id'])),
-		[searchedValue]
+			setShownCourses(
+				filterElements(allCourses, searchedValue, ['title', 'id'])
+			),
+		[searchedValue, useSelector(selectCourses).length]
 	);
 
 	useEffect(() => {
@@ -43,7 +42,7 @@ export const Courses = () => {
 	}, [selected]);
 	return (
 		<div>
-			{!courses.length ? (
+			{!useSelector(selectCourses).length ? (
 				<EmptyCourseList />
 			) : selected ? (
 				<CourseInfo
@@ -70,6 +69,7 @@ export const Courses = () => {
 							date={props.date}
 							courseInfo={false}
 							setSelected={setSelected}
+							deleteCourse={(id) => deleteCourse(id)}
 						/>
 					))}
 				</div>

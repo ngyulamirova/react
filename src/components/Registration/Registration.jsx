@@ -2,9 +2,11 @@ import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
 import './Registration.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getErrorsFromResponse } from '../../helpers/getErrorsFromResponce';
+import { useDispatch } from 'react-redux';
+import { saveUserAction } from '../../store/user/actions';
 
 export const Registration = (props) => {
 	const [emailInput, setEmailInput] = useState('');
@@ -14,6 +16,15 @@ export const Registration = (props) => {
 	const navigate = useNavigate();
 	const loginUrl = 'http://localhost:4000/login';
 	const registrationUrl = 'http://localhost:4000/register';
+	const properties = ['email', 'password', 'name'];
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			navigate('/courses', { replace: true });
+		}
+	}, []);
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
@@ -41,17 +52,17 @@ export const Registration = (props) => {
 				.then((response) => {
 					if (response.ok) {
 						response.json().then((json) => {
-							localStorage.setItem(
-								'name',
-								(json.user && json.user.name) || nameInput
-							);
+							dispatch(saveUserAction(json?.user));
 							localStorage.setItem('token', json.result || undefined);
 						});
 						navigate('/courses', { replace: true });
 					} else {
 						response.json().then((json) => {
-							console.log(json);
-							setErrors(json.errors ? getErrorsFromResponse(json.errors) : {});
+							setErrors(
+								json.errors
+									? getErrorsFromResponse(json.errors, properties)
+									: {}
+							);
 						});
 						return response.error;
 					}

@@ -1,19 +1,11 @@
-export const getErrorsFromResponse = (value) => {
-	const result = {
-		email: '',
-		name: '',
-		password: '',
-	};
+export const getErrorsFromResponse = (value, properties) => {
+	const result = {};
 	value.forEach((element) => {
-		if (element.includes('email')) {
-			result.email = element;
-		}
-		if (element.includes('name')) {
-			result.name = element;
-		}
-		if (element.includes('password')) {
-			result.password = element;
-		}
+		properties.forEach((property) => {
+			if (element.includes(property)) {
+				result[property] = element;
+			}
+		});
 	});
 	return result;
 };

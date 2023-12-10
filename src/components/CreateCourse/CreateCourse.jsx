@@ -5,30 +5,32 @@ import { Button } from '../../common/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
+import { getErrorsFromResponse } from '../../helpers/getErrorsFromResponce';
 
 export const CreateCourse = () => {
 	const [titleInput, setTitleInput] = useState('');
 	const [durationInput, setDurationInput] = useState('');
-	const [authorList, setAuthorList] = useState([]);
+	const [authorList, setAuthorList] = useState(['author']);
 	const navigate = useNavigate();
-	const [hasError, setError] = useState(false);
+	const [errors, setErrors] = useState(false);
 	const [authorInput, setAuthorInput] = useState('');
 	const textareaRef = useRef(null);
+	const properties = ['title', 'duration', 'description'];
 	const goBack = () => {
 		navigate('/courses', { replace: true });
 	};
 
 	const createCourse = () => {
 		const description = textareaRef.current.value;
-		if (titleInput && durationInput && description && authorList) {
+		if (titleInput && durationInput && description && authorList.length) {
 			const data = {
 				title: titleInput,
 				description,
-				duration: durationInput,
+				duration: +durationInput,
 				authors: authorList,
 			};
 			const url = 'http://localhost:4000/courses/add';
-			addCourse(url, JSON.stringify(data));
+			addCourse(url, data);
 		}
 	};
 
@@ -48,14 +50,21 @@ export const CreateCourse = () => {
 				body: JSON.stringify(jsonData),
 				headers: {
 					'Content-Type': 'application/json',
+					accept: '*/*',
 				},
 			}).then((response) => {
-				console.log(response);
-				navigate('/courses', { replace: true });
+				if (response.ok) {
+					navigate('/courses', { replace: true });
+				} else {
+					response.json().then((json) => {
+						setErrors(
+							json.errors ? getErrorsFromResponse(json.errors, properties) : {}
+						);
+					});
+					return response.error;
+				}
 			});
-		} catch (error) {
-			setError(true);
-		}
+		} catch (error) {}
 	};
 
 	return (
@@ -64,12 +73,24 @@ export const CreateCourse = () => {
 			<div className='create-course-container'>
 				<h2>Main Info</h2>
 				<p className='registration-property-name'>Title</p>
-				<Input value={titleInput} setValue={setTitleInput} />
+				<Input
+					value={titleInput}
+					setValue={setTitleInput}
+					error={errors.title}
+				/>
 				<p className='registration-property-name'>Description</p>
 				<textarea ref={textareaRef} className='create-course-textarea' />
+				{errors.description ? (
+					<p className='error-text'>{errors.description}</p>
+				) : null}
 				<h2>Duration</h2>
 				<div className='create-course-grid'>
-					<Input value={durationInput} setValue={setDurationInput} />
+					<Input
+						type='number'
+						value={durationInput}
+						setValue={setDurationInput}
+						error={errors.duration}
+					/>
 					<span>{getCourseDuration(durationInput)}</span>
 				</div>
 				<div className='create-course-grid'>

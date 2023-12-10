@@ -44,7 +44,7 @@ export const CourseCard = (props) => (
 							name='SHOW COURSE'
 							onClick={() => props.setSelected(props)}
 						/>
-						<Button icon='bin' />
+						<Button icon='bin' onClick={() => props.deleteCourse(props.id)} />
 						<Button icon='edit' />
 					</div>
 				)}
@@ -61,4 +61,5 @@ CourseCard.propTypes = {
 	date: PropTypes.string,
 	title: PropTypes.string,
 	setSelected: PropTypes.func,
+	deleteCourse: PropTypes.func,
 };

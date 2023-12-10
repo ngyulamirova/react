@@ -8,6 +8,7 @@ export const Input = (props) => {
 		<div>
 			<input
 				className={props.error ? 'error-input' : 'input'}
+				type={props.type}
 				ref={inputRef}
 				value={props.value}
 				onInput={() =>

@@ -1,4 +1,4 @@
-import { ADD_AUTHOR, DELETE_AUTHORS, SAVE_AUTHORS } from './types';
+import { ADD_AUTHORS, DELETE_AUTHORS, SAVE_AUTHORS } from './types';
 
 export const authorsReducer = (state = [], action) => {
 	switch (action.type) {
@@ -6,7 +6,7 @@ export const authorsReducer = (state = [], action) => {
 		case SAVE_AUTHORS:
 			return action.payload;
 
-		case ADD_AUTHOR:
+		case ADD_AUTHORS:
 			return [...state, action.payload];
 
 		case DELETE_AUTHORS:
